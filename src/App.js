@@ -1,25 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+
+import { Header } from "./components/header";
+import { Palette } from "./components/palette";
+import { Tambium } from "./palettes";
+
+const MAX_WIDTH = 1440;
+
+const PALETTES = {
+  TAMBIUM: "Tambium"
+};
 
 function App() {
+  const [palette, setPalette] = React.useState(PALETTES.TAMBIUM);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <Header maxWidth={MAX_WIDTH} />
+      <div
+        style={{
+          display: "grid",
+          gridAutoColumns: "1fr",
+          gridAutoFlow: "column",
+          marginLeft: "auto",
+          marginRight: "auto",
+          maxWidth: MAX_WIDTH,
+          padding: 24
+        }}
+      >
+        <div>
+          <div style={{ marginBottom: 16 }}>
+            <span style={{ fontSize: 21 }}>{palette} colors</span>
+          </div>
+          <Palette palette={Tambium} />
+        </div>
+        <div>Color</div>
+        <div>Shade</div>
+      </div>
+    </React.Fragment>
   );
 }
 
