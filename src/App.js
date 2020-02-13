@@ -4,6 +4,7 @@ import { Header } from "./components/header";
 import { Lessons } from "./components/lessons";
 import { Palette } from "./components/palette";
 import { Tambium } from "./palettes";
+import { uniformPalette } from "./utilities";
 
 const MAX_WIDTH = 1440;
 
@@ -33,7 +34,7 @@ function App() {
           <div style={{ marginBottom: 16 }}>
             <span style={{ fontSize: 21 }}>{palette} colors</span>
           </div>
-          <Palette palette={Tambium} />
+          <Palette palette={uniformPalette(Tambium)} />
         </div>
         <div>Color</div>
         <div>Shade</div>
