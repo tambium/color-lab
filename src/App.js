@@ -8,12 +8,50 @@ import { uniformPalette } from "./utilities";
 
 const MAX_WIDTH = 1440;
 
-const PALETTES = {
-  TAMBIUM: "Tambium"
-};
-
 function App() {
-  const [palette, setPalette] = React.useState(PALETTES.TAMBIUM);
+  const [palette, setPalette] = React.useState(uniformPalette(Tambium));
+  const [palettePosition, setPalettePosition] = React.useState([5, 5]);
+  const [keysPressed, setKeysPressed] = React.useState({});
+
+  React.useEffect(() => {
+    if (keysPressed["Shift"] && keysPressed["ArrowUp"]) {
+      setPalettePosition(p => (p[1] > 0 ? [p[0], p[1] - 1] : p));
+    }
+    if (keysPressed["Shift"] && keysPressed["ArrowDown"]) {
+      setPalettePosition(p =>
+        p[1] < palette.length - 1 ? [p[0], p[1] + 1] : p
+      );
+    }
+    if (keysPressed["Shift"] && keysPressed["ArrowLeft"]) {
+      setPalettePosition(p => {
+        return p[0] > 0 ? [p[0] - 1, p[1]] : p;
+      });
+    }
+    if (keysPressed["Shift"] && keysPressed["ArrowRight"]) {
+      setPalettePosition(p => {
+        return palette[p[0]] && p[0] < palette[p[0]].shades.length - 1
+          ? [p[0] + 1, p[1]]
+          : p;
+      });
+    }
+  }, [keysPressed, palette, palette.length]);
+
+  React.useEffect(() => {
+    const handleKeyDown = ({ key }) => {
+      setKeysPressed({ ...keysPressed, [key]: true });
+    };
+
+    const handleKeyUp = ({ key }) => {
+      setKeysPressed({ ...keysPressed, [key]: false });
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [keysPressed]);
 
   return (
     <React.Fragment>
@@ -32,9 +70,9 @@ function App() {
       >
         <div>
           <div style={{ marginBottom: 16 }}>
-            <span style={{ fontSize: 21 }}>{palette} colors</span>
+            <span style={{ fontSize: 21 }}>Tambium colors</span>
           </div>
-          <Palette palette={uniformPalette(Tambium)} />
+          <Palette palette={palette} palettePosition={palettePosition} />
         </div>
         <div>Color</div>
         <div>Shade</div>

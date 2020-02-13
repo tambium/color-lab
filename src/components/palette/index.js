@@ -7,49 +7,8 @@ const SHADE_WIDTH = 54;
 const PADDING = 6;
 const BORDER_WIDTH = 2;
 
-export const Palette = ({ palette }) => {
+export const Palette = ({ palette, palettePosition }) => {
   const firstShadeSet = palette[0];
-
-  const [position, setPosition] = React.useState([5, 5]);
-  const [keysPressed, setKeysPressed] = React.useState({});
-
-  React.useEffect(() => {
-    if (keysPressed["Shift"] && keysPressed["ArrowUp"]) {
-      setPosition(p => (p[1] > 0 ? [p[0], p[1] - 1] : p));
-    }
-    if (keysPressed["Shift"] && keysPressed["ArrowDown"]) {
-      setPosition(p => (p[1] < palette.length - 1 ? [p[0], p[1] + 1] : p));
-    }
-    if (keysPressed["Shift"] && keysPressed["ArrowLeft"]) {
-      setPosition(p => {
-        return p[0] > 0 ? [p[0] - 1, p[1]] : p;
-      });
-    }
-    if (keysPressed["Shift"] && keysPressed["ArrowRight"]) {
-      setPosition(p => {
-        return palette[p[0]] && p[0] < palette[p[0]].shades.length - 1
-          ? [p[0] + 1, p[1]]
-          : p;
-      });
-    }
-  }, [keysPressed, palette, palette.length]);
-
-  React.useEffect(() => {
-    const handleKeyDown = ({ key }) => {
-      setKeysPressed({ ...keysPressed, [key]: true });
-    };
-
-    const handleKeyUp = ({ key }) => {
-      setKeysPressed({ ...keysPressed, [key]: false });
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
-    };
-  }, [keysPressed]);
 
   return (
     <div>
@@ -102,7 +61,7 @@ export const Palette = ({ palette }) => {
                 {shadeSet.shades.map((shade, idx) => {
                   const coordinates = [idx, yCoord];
 
-                  const isSelected = isEqual(coordinates, position);
+                  const isSelected = isEqual(coordinates, palettePosition);
 
                   /**
                    * `shade` may be `{}` if palette has been manipulated
