@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Header } from "./components/header";
+import { Lessons } from "./components/lessons";
 import { Palette } from "./components/palette";
 import { Tambium } from "./palettes";
 
@@ -18,6 +19,7 @@ function App() {
       <Header maxWidth={MAX_WIDTH} />
       <div
         style={{
+          borderBottom: "1px solid #ECECEC",
           display: "grid",
           gridAutoColumns: "1fr",
           gridAutoFlow: "column",
@@ -36,6 +38,7 @@ function App() {
         <div>Color</div>
         <div>Shade</div>
       </div>
+      <Lessons maxWidth={MAX_WIDTH} />
     </React.Fragment>
   );
 }
