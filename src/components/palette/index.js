@@ -2,10 +2,7 @@ import React from "react";
 import { contrastRatio } from "chromatism";
 import isEqual from "lodash.isequal";
 import { hex } from "wcag-contrast";
-
-const SHADE_WIDTH = 54;
-const PADDING = 6;
-const BORDER_WIDTH = 2;
+import { BORDER_WIDTH, PADDING, SHADE_WIDTH } from "../../constants";
 
 export const Palette = ({ palette, palettePosition }) => {
   const firstShadeSet = palette[0];

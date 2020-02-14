@@ -1,16 +1,16 @@
 import React from "react";
 
+import { Color } from "./components/color";
 import { Header } from "./components/header";
 import { Lessons } from "./components/lessons";
 import { Palette } from "./components/palette";
+import { Shade } from "./components/shade";
 import { Tambium } from "./palettes";
 import { uniformPalette } from "./utilities";
 
-const MAX_WIDTH = 1440;
-
 function App() {
   const [palette, setPalette] = React.useState(uniformPalette(Tambium));
-  const [palettePosition, setPalettePosition] = React.useState([5, 5]);
+  const [palettePosition, setPalettePosition] = React.useState([5, 4]);
   const [keysPressed, setKeysPressed] = React.useState({});
 
   React.useEffect(() => {
@@ -55,16 +55,16 @@ function App() {
 
   return (
     <React.Fragment>
-      <Header maxWidth={MAX_WIDTH} />
+      <Header />
       <div
         style={{
           borderBottom: "1px solid #ECECEC",
+          columnGap: 60,
           display: "grid",
           gridAutoColumns: "1fr",
           gridAutoFlow: "column",
           marginLeft: "auto",
           marginRight: "auto",
-          maxWidth: MAX_WIDTH,
           padding: 24
         }}
       >
@@ -74,10 +74,14 @@ function App() {
           </div>
           <Palette palette={palette} palettePosition={palettePosition} />
         </div>
-        <div>Color</div>
-        <div>Shade</div>
+        <div>
+          <Color palette={palette} palettePosition={palettePosition} />
+        </div>
+        <div>
+          <Shade palette={palette} palettePosition={palettePosition} />
+        </div>
       </div>
-      <Lessons maxWidth={MAX_WIDTH} />
+      <Lessons />
     </React.Fragment>
   );
 }
