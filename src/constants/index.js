@@ -1,0 +1,3 @@
+import { BORDER_WIDTH, PADDING, SHADE_WIDTH } from "./table";
+
+export { BORDER_WIDTH, PADDING, SHADE_WIDTH };

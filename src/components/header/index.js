@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Header = ({ maxWidth }) => {
+export const Header = () => {
   return (
     <header
       style={{
@@ -11,7 +11,6 @@ export const Header = ({ maxWidth }) => {
         justifyContent: "space-between",
         marginLeft: "auto",
         marginRight: "auto",
-        maxWidth: maxWidth,
         padding: 24
       }}
     >

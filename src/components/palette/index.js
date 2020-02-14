@@ -1,33 +1,11 @@
 import React from "react";
 import { contrastRatio } from "chromatism";
+import isEqual from "lodash.isequal";
 import { hex } from "wcag-contrast";
+import { BORDER_WIDTH, PADDING, SHADE_WIDTH } from "../../constants";
 
-/** Sort palette from lightest shade to darkest shade */
-const sortShades = shades => shades.sort((a, b) => a.shade - b.shade);
-
-/** Find palette with greatest number of shades */
-const largestSet = palette => {
-  let largest = { shades: [] };
-  palette.forEach(set => {
-    largest = set.shades.length > largest.shades.length ? set : largest;
-  });
-  return largest;
-};
-
-/** Fill set to match longest shade set  */
-const fillShades = ({ shades, targetLength }) => {
-  if (shades.length === targetLength) return shades;
-
-  const toAdd = targetLength - shades.length;
-  shades.unshift(new Array(toAdd).fill(null));
-
-  return shades;
-};
-
-const SHADE_WIDTH = 54;
-
-export const Palette = ({ palette }) => {
-  const largest = largestSet(palette);
+export const Palette = ({ palette, palettePosition }) => {
+  const firstShadeSet = palette[0];
 
   return (
     <div>
@@ -35,10 +13,14 @@ export const Palette = ({ palette }) => {
         <thead>
           <tr>
             <th />
-            {sortShades(largest.shades).map(shade => (
+            {firstShadeSet.shades.map(shade => (
               <th key={shade.shade} style={{ paddingBottom: 8 }}>
                 <span
-                  style={{ color: "#8992A1", fontSize: 12, fontWeight: 500 }}
+                  style={{
+                    color: "#8992A1",
+                    fontSize: 12,
+                    fontWeight: 500
+                  }}
                 >
                   {shade.shade}
                 </span>
@@ -47,14 +29,11 @@ export const Palette = ({ palette }) => {
           </tr>
         </thead>
         <tbody>
-          {palette.map(color => {
-            const adjustedShades = fillShades({
-              shades: sortShades(color.shades),
-              targetLength: largest.shades.length
-            });
+          {palette.map(shadeSet => {
+            const yCoord = palette.findIndex(x => x === shadeSet);
 
             return (
-              <tr key={color.title}>
+              <tr key={shadeSet.title}>
                 <td
                   style={{
                     display: "flex",
@@ -64,24 +43,43 @@ export const Palette = ({ palette }) => {
                   }}
                 >
                   <span
-                    style={{ color: "#8992A1", fontSize: 12, fontWeight: 500 }}
+                    style={{
+                      color: "#8992A1",
+                      fontSize: 12,
+                      fontWeight: 500,
+                      paddingBottom: PADDING + BORDER_WIDTH,
+                      paddingTop: PADDING + BORDER_WIDTH
+                    }}
                   >
-                    {color.title}
+                    {shadeSet.title}
                   </span>
                 </td>
 
-                {adjustedShades.map((shade, idx) => {
-                  const textColor = contrastRatio(shade.hex).hex;
+                {shadeSet.shades.map((shade, idx) => {
+                  const coordinates = [idx, yCoord];
 
-                  /** Shade may be null if shades manipulated to match longest set */
+                  const isSelected = isEqual(coordinates, palettePosition);
+
+                  /**
+                   * `shade` may be `{}` if palette has been manipulated
+                   * to support shade sets of varying length.
+                   * Otherwise, expect { hex: string, shade: number };
+                   */
+                  const textColor = shade.hex
+                    ? contrastRatio(shade.hex).hex
+                    : "transparent";
+
                   return (
                     <td
                       key={idx}
                       style={{
                         backgroundColor: shade.hex ? shade.hex : "transparent",
+                        border: isSelected
+                          ? `${BORDER_WIDTH}px solid #FFF`
+                          : `${BORDER_WIDTH}px solid transparent`,
                         minWidth: SHADE_WIDTH,
-                        paddingBottom: 6,
-                        paddingTop: 6,
+                        paddingBottom: PADDING,
+                        paddingTop: PADDING,
                         textAlign: "center"
                       }}
                     >
@@ -92,7 +90,7 @@ export const Palette = ({ palette }) => {
                           fontWeight: 500
                         }}
                       >
-                        {hex(textColor, shade.hex).toFixed(2)}
+                        {shade.hex ? hex(textColor, shade.hex).toFixed(2) : "X"}
                       </span>
                     </td>
                   );
