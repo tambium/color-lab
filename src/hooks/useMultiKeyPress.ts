@@ -1,25 +1,17 @@
-import { useState, useEffect } from 'react';
+import Mousetrap from 'mousetrap';
+import { useEffect } from 'react';
 
-export default function useMultiKeyPress() {
-  const [keysPressed, setKeyPressed] = useState([]);
-
-  function downHandler({ key }) {
-    setKeyPressed(keysPressed.add(key));
-  }
-
-  const upHandler = ({ key }) => {
-    keysPressed.delete(key);
-    setKeyPressed(keysPressed);
-  };
-
+export const useMultiKeyPress = (
+  targetKeys: string[],
+  callback: (e: ExtendedKeyboardEvent, combo: string) => any,
+) => {
   useEffect(() => {
-    window.addEventListener('keydown', downHandler);
-    window.addEventListener('keyup', upHandler);
-    return () => {
-      window.removeEventListener('keydown', downHandler);
-      window.removeEventListener('keyup', upHandler);
-    };
-  }, []); // Empty array ensures that effect is only run on mount and unmount
+    const mt = new Mousetrap(document.body);
 
-  return keysPressed;
-}
+    mt.bind(targetKeys, callback);
+
+    return () => {
+      mt.unbind(targetKeys);
+    };
+  }, [targetKeys]);
+};

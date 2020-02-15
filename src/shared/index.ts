@@ -1,3 +1,3 @@
-import { headCellStyle } from './style';
+import { ColorCell, headCellStyle } from './style';
 
-export { headCellStyle };
+export { ColorCell, headCellStyle };

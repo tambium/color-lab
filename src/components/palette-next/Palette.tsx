@@ -5,7 +5,8 @@ import { contrastRatio } from 'chromatism';
 import { hex } from 'wcag-contrast';
 import { ShadeSet } from '../../palettes';
 import { Table } from '../table';
-import { headCellStyle } from '../../shared';
+import { headCellStyle, ColorCell } from '../../shared';
+import { colorTableHead } from '../../shared/table';
 
 type PaletteProps = {
   palette: ShadeSet[];
@@ -13,25 +14,7 @@ type PaletteProps = {
 };
 
 export const Palette: React.FC<PaletteProps> = ({ palette, position }) => {
-  const createHead = () => {
-    return {
-      cells: [
-        {}, // spacer for first column
-        ...palette[0].shades.map((shade, idx) => ({
-          key: shade.shade || idx,
-          content: shade.shade,
-          style: [
-            headCellStyle,
-            css`
-              padding-bottom: 8px;
-            `,
-          ],
-        })),
-      ],
-    };
-  };
-
-  const head = createHead();
+  const head = colorTableHead({ palette, withSpacer: true });
 
   const rows = palette.map((shadeSet: ShadeSet, yIdx: number) => {
     return {
@@ -63,20 +46,13 @@ export const Palette: React.FC<PaletteProps> = ({ palette, position }) => {
           return {
             key: shade.shade || xIdx,
             content: (
-              <td
-                style={{
-                  backgroundColor: shade.hex || 'transparent',
-                  border: `2px solid ${isSelected ? '#FFF' : 'transparent'}`,
-                  color: textColor,
-                  fontSize: 12,
-                  fontWeight: 500,
-                  paddingBottom: 8,
-                  paddingTop: 8,
-                  textAlign: 'center',
-                }}
+              <ColorCell
+                color={textColor}
+                hex={shade.hex}
+                isSelected={isSelected}
               >
                 {shade.hex ? hex(textColor, shade.hex).toFixed(2) : ''}
-              </td>
+              </ColorCell>
             ),
           };
         }),
