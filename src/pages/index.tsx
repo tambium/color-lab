@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ColorLab } from '../components/color-lab';
-import { Lessons } from '../components/lessons-next';
+import { Lessons } from '../components/lessons';
 import { Reset } from '../components/global-styles';
 
 const Home = (): React.ReactNode => (

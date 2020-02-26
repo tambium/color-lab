@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Layout } from '.';
 import { Header } from '../header';
-import { Color } from '../color-next';
-import { Palette } from '../palette-next';
-import { Shade } from '../shade-next';
+import { Color } from '../color';
+import { Palette } from '../palette';
+import { Shade } from '../shade';
 import { Tambium } from '../../palettes';
 import { uniformPalette } from '../../utilities';
 import { useMultiKeyPress } from '../../hooks';
@@ -12,7 +12,7 @@ interface ColorLabProps {}
 
 export const ColorLab: React.FC<ColorLabProps> = () => {
   const [palette, setPalette] = React.useState(uniformPalette(Tambium));
-  const [position, setPosition] = React.useState([5, 4]);
+  const [position, setPosition] = React.useState([5, 1]);
 
   useMultiKeyPress(['shift+up'], (e) => {
     setPosition((p) => (p[1] > 0 ? [p[0], p[1] - 1] : p));
