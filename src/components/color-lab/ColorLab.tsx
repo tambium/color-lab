@@ -1,46 +1,106 @@
 import * as React from 'react';
 import { Layout } from '.';
 import { Header } from '../header';
-import { Color } from '../color';
-import { Palette } from '../palette';
-import { Shade } from '../shade';
+// import { Color } from '../color';
+import { Color } from '../color-next';
+// import { Palette } from '../palette';
+import { Palette } from '../palette-next';
+// import { Shade } from '../shade';
+import { Shade } from '../shade-next';
 import { Tambium } from '../../palettes';
-import { uniformPalette } from '../../utilities';
+import { SHADE, SHADE_SET } from '../../constants';
 import { useMultiKeyPress } from '../../hooks';
 
 interface ColorLabProps {}
 
 export const ColorLab: React.FC<ColorLabProps> = () => {
-  const [palette, setPalette] = React.useState(uniformPalette(Tambium));
-  const [position, setPosition] = React.useState([5, 1]);
+  const [palette, setPalette] = React.useState(
+    mapPalette(uniformPalette(Tambium)),
+  );
 
-  useMultiKeyPress(['shift+up'], (e) => {
-    setPosition((p) => (p[1] > 0 ? [p[0], p[1] - 1] : p));
-  });
+  const [position, setPosition] = React.useState(new Map());
 
-  useMultiKeyPress(['shift+down'], (e) => {
-    setPosition((p) => (p[1] < palette.length - 1 ? [p[0], p[1] + 1] : p));
-  });
+  React.useEffect(() => {
+    /** On-mount, we select a random shade set and shade. */
+    const randomShadeSetKey = getRandomItem(palette);
+    const randomShadeKey = getRandomItem(palette.get(randomShadeSetKey));
 
-  useMultiKeyPress(['shift+left'], (e) => {
-    setPosition((p) => (p[0] > 0 ? [p[0] - 1, p[1]] : p));
-  });
-
-  useMultiKeyPress(['shift+right'], (e) => {
-    setPosition((p) =>
-      palette[p[0]] && p[0] < palette[p[0]].shades.length - 1
-        ? [p[0] + 1, p[1]]
-        : p,
+    setPosition(
+      new Map([
+        [SHADE_SET, randomShadeSetKey],
+        [SHADE, randomShadeKey],
+      ]),
     );
+  }, []);
+
+  /** Palette navigation helpers */
+  const selectedShade = position.get(SHADE);
+  const selectedShadeSet = position.get(SHADE_SET);
+  const paletteKeys = [...palette.keys()];
+  const shadeSetKeys = selectedShadeSet
+    ? [...palette.get(selectedShadeSet).keys()]
+    : undefined;
+  const selectedShadeSetIdx = paletteKeys.findIndex(
+    (x) => x === selectedShadeSet,
+  );
+  const selectedShadeIdx = shadeSetKeys
+    ? shadeSetKeys.findIndex((x) => x === selectedShade)
+    : undefined;
+
+  // Navigate palette left
+  useMultiKeyPress(['shift+up'], (e) => {
+    if (selectedShadeSetIdx !== 0) {
+      const cp = new Map(position);
+      cp.set(SHADE_SET, paletteKeys[selectedShadeSetIdx - 1]);
+      setPosition(cp);
+    }
+  });
+
+  // Navigate palette down
+  useMultiKeyPress(['shift+down'], (e) => {
+    if (selectedShadeSetIdx < paletteKeys.length - 1) {
+      const cp = new Map(position);
+      cp.set(SHADE_SET, paletteKeys[selectedShadeSetIdx + 1]);
+      setPosition(cp);
+    }
+  });
+
+  // Navigate palette left
+  useMultiKeyPress(['shift+left'], (e) => {
+    if (selectedShadeIdx && selectedShadeIdx !== 0) {
+      const cp = new Map(position);
+      cp.set(SHADE, shadeSetKeys[selectedShadeIdx - 1]);
+      setPosition(cp);
+    }
+  });
+
+  // Navigate palette right
+  useMultiKeyPress(['shift+right'], (e) => {
+    if (shadeSetKeys && selectedShadeIdx < shadeSetKeys.length - 1) {
+      const cp = new Map(position);
+      cp.set(SHADE, shadeSetKeys[selectedShadeIdx + 1]);
+      setPosition(cp);
+    }
   });
 
   return (
     <React.Fragment>
       <Header />
       <Layout
-        columnA={<Palette palette={palette} position={position} />}
-        columnB={<Color palette={palette} position={position} />}
-        columnC={<Shade palette={palette} position={position} />}
+        columnA={
+          <Palette
+            palette={palette}
+            selectedShade={selectedShade}
+            selectedShadeSet={selectedShadeSet}
+          />
+        }
+        columnB={
+          <Color palette={palette} selectedShadeSet={selectedShadeSet} />
+        }
+        columnC={<Shade palette={palette} selectedShade={selectedShade} />}
+        // columnA={<Palette palette={palette} position={position} />}
+        // columnB={<Color palette={palette} position={position} />}
+        // columnC={<Shade palette={palette} position={position} />}
       />
     </React.Fragment>
   );

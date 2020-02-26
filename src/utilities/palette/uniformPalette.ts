@@ -1,4 +1,4 @@
-import { ShadeSet } from '../palettes';
+import { ShadeSet } from '../../palettes';
 
 /** Find palette with greatest number of shades */
 const findLargestSet = (palette: ShadeSet[]) => {

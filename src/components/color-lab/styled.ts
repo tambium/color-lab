@@ -2,7 +2,7 @@ import { css } from '@emotion/core';
 
 export const layoutStyle = css`
   border-bottom: 1px solid #ececec;
-  column-gap: 60px;
+  column-gap: 24px;
   display: grid;
   grid-auto-columns: 1fr;
   grid-auto-flow: column;
