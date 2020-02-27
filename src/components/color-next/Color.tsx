@@ -75,10 +75,9 @@ export const Color: React.FC<ColorProps> = ({ palette, selectedShadeSet }) => {
                 </div>
               );
             })}
-            {[...shadeSet.keys()].map((key) => {
+            {[...shadeSet.keys()].map((key, idx) => {
               const color = shadeSet.get(key);
               const lchified = d3lch(color);
-              const propertyValue = setPrecision(lchified[property]);
 
               const boundaries = findDisplayableBoundaries({
                 lch: lchified,
@@ -87,24 +86,34 @@ export const Color: React.FC<ColorProps> = ({ palette, selectedShadeSet }) => {
                 height: CHART_HEIGHT,
               });
 
+              const isFirst = idx === 0;
+              const isLast = idx === [...shadeSet.keys()].length - 1;
+
               return (
                 <div
                   key={`${property}-${key}`}
-                  style={{ position: 'relative' }}
+                  style={{
+                    borderBottom: '1px solid #CAD2DA',
+                    borderLeft: isFirst ? '1px solid #CAD2DA' : null,
+                    borderRight: isLast ? '1px solid #CAD2DA' : null,
+                    position: 'relative',
+                  }}
                 >
                   {boundaries.map((boundary) => {
-                    const { direction, top } = boundary;
+                    const { bottom, top } = boundary;
                     return (
                       <div
                         key={`${property}-${key}-${boundary.idx}`}
                         style={{
-                          backgroundColor: 'red',
+                          backgroundImage: `url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1JyBoZWlnaHQ9JzUnPgogIDxyZWN0IHdpZHRoPSc1JyBoZWlnaHQ9JzUnIGZpbGw9J3doaXRlJy8+CiAgPHBhdGggZD0nTTAgNUw1IDBaTTYgNEw0IDZaTS0xIDFMMSAtMVonIHN0cm9rZT0nIzg4OCcgc3Ryb2tlLXdpZHRoPScxJy8+Cjwvc3ZnPg==")`,
+                          backgroundRepeat: 'repeat',
+                          borderBottom: '1px solid #CAD2DA',
+                          borderTop: '1px solid #CAD2DA',
+                          bottom: `calc(100% - ${bottom}%)`,
                           left: 0,
                           position: 'absolute',
-                          top: direction === 'upward' ? 0 : `${top}%`,
-                          bottom:
-                            direction === 'upward' ? `calc(100% - ${top}%)` : 0,
                           right: 0,
+                          top: `${top}%`,
                         }}
                       />
                     );

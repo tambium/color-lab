@@ -21,8 +21,8 @@ export const HUE_RANGE = new Map([
 ]);
 
 export const RANGES = new Map([
-  // [LIGHTNESS, LIGHTNESS_RANGE],
-  // [CHROMA, CHROMA_RANGE],
+  [LIGHTNESS, LIGHTNESS_RANGE],
+  [CHROMA, CHROMA_RANGE],
   [HUE, HUE_RANGE],
 ]);
 

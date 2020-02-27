@@ -9,6 +9,7 @@ import { Palette } from '../palette-next';
 import { Shade } from '../shade-next';
 import { Tambium } from '../../palettes';
 import { SHADE, SHADE_SET } from '../../constants';
+import { getRandomItem, mapPalette, uniformPalette } from '../../utilities';
 import { useMultiKeyPress } from '../../hooks';
 
 interface ColorLabProps {}

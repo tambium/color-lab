@@ -44,19 +44,69 @@ export const findDisplayableBoundaries = ({
        * false -> true: downward direction
        * true -> false: upward direction
        */
-
       const direction = !accumulator && currentValue ? UPWARD : DOWNWARD;
       boundaries.push({
         idx: currentIndex / precision,
         direction,
-        top: (currentIndex / displayable.length) * 100,
+        weighted: (currentIndex / displayable.length) * 100,
       });
     }
 
     return currentValue;
   });
 
-  console.log(boundaries);
+  const renderable = [];
 
-  return boundaries;
+  /**
+   * does upward boundary have downward boundary before it?
+   *    yes -> start: previous.weighted -- end: current.weighted
+   *    no  -> start: 0%                -- end: current.weighted
+   *
+   * does downward boundary have upward boundary after it?
+   *    yes -> start: current.weighted  -- end: next.weighted
+   *    no  -> start: current.weighted  -- end: 100%
+   */
+
+  for (let i = 0; i < boundaries.length; i++) {
+    const current = boundaries[i];
+    let previous, next;
+    if (boundaries[i - 1]) previous = boundaries[i - 1];
+    if (boundaries[i + 1]) next = boundaries[i + 1];
+
+    if (current.direction === UPWARD) {
+      if (previous && previous.direction === DOWNWARD) {
+        renderable.push({
+          ...current,
+          top: previous.weighted,
+          bottom: current.weighted,
+        });
+      }
+      if (!previous || previous.direction !== DOWNWARD) {
+        renderable.push({
+          ...current,
+          top: 0,
+          bottom: current.weighted,
+        });
+      }
+    }
+
+    if (current.direction === DOWNWARD) {
+      if (next && next.direction === UPWARD) {
+        renderable.push({
+          ...current,
+          top: current.weighted,
+          bottom: next.weighted,
+        });
+      }
+      if (!next || next.direction !== UPWARD) {
+        renderable.push({
+          ...current,
+          top: current.weighted,
+          bottom: 100,
+        });
+      }
+    }
+  }
+
+  return renderable;
 };
