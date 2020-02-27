@@ -1,12 +1,9 @@
 import * as React from 'react';
 import { Layout } from '.';
 import { Header } from '../header';
-// import { Color } from '../color';
-import { Color } from '../color-next';
-// import { Palette } from '../palette';
-import { Palette } from '../palette-next';
-// import { Shade } from '../shade';
-import { Shade } from '../shade-next';
+import { Color } from '../color';
+import { Palette } from '../palette';
+import { Shade } from '../shade';
 import { Tambium } from '../../palettes';
 import { SHADE, SHADE_SET } from '../../constants';
 import { getRandomItem, mapPalette, uniformPalette } from '../../utilities';

@@ -1,50 +1,62 @@
 import React from 'react';
-import { css } from '@emotion/core';
-import { ShadeSet } from '../../palettes';
-import { headCellStyle, ColorCell } from '../../shared';
-import { Table } from '../table';
+import { ChartSet } from '../chart-set';
 
 interface ShadeProps {
-  palette: ShadeSet[];
-  position: Array<number>;
+  palette: Map<string, Map<number, string>>;
+  selectedShade: number | null;
+  selectedShadeSet: string | null;
 }
 
-export const Shade: React.FC<ShadeProps> = ({ palette, position }) => {
-  const selectedShade = palette[position[1]].shades[position[0]];
-  const { shade } = selectedShade;
+export const Shade: React.FC<ShadeProps> = ({
+  palette,
+  selectedShade,
+  selectedShadeSet,
+}) => {
+  if (!selectedShade) return null;
 
-  const head = {
-    cells: palette.map((shadeSet, idx) => ({
-      key: shadeSet.title || idx,
-      content: shadeSet.title,
-      style: css`
-        ${headCellStyle};
-        padding-bottom: 8px;
-      `,
-    })),
-  };
+  const shades = new Map();
+  palette.forEach((value, key, map) => {
+    shades.set(key, value.get(selectedShade));
+  });
 
-  const rows = [
-    {
-      key: `shade-row`,
-      cells: palette.map((shadeSet, idx) => {
-        const target = shadeSet.shades[position[0]];
-        const isSelected = palette[position[1]] === shadeSet;
-
-        return {
-          key: shadeSet.title || idx,
-          content: <ColorCell hex={target.hex} isSelected={isSelected} />,
-        };
-      }),
-    },
-  ];
+  const SHADES_SIZE = shades.size;
 
   return (
     <div>
       <div style={{ marginBottom: 16 }}>
-        <span style={{ fontSize: 21 }}>{shade}</span>
+        <span style={{ fontSize: 21 }}>{selectedShade}</span>
       </div>
-      <Table head={head} rows={rows} />
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: `repeat(${SHADES_SIZE}, 1fr)`,
+          gridTemplateRows: '28px 36px',
+          position: 'relative',
+          marginBottom: 24,
+        }}
+      >
+        {[...shades.keys()].map((key) => {
+          return (
+            <div key={key}>
+              <span style={{ fontSize: 12, fontWeight: 500 }}>{key}</span>
+            </div>
+          );
+        })}
+        {[...shades.keys()].map((key) => {
+          const color = shades.get(key);
+          const isSelected = selectedShadeSet === key;
+          return (
+            <div
+              key={key}
+              style={{
+                backgroundColor: color,
+                border: `2px solid ${isSelected ? '#FFF' : 'transparent'}`,
+              }}
+            />
+          );
+        })}
+      </div>
+      <ChartSet columnCount={SHADES_SIZE} columnData={shades} />
     </div>
   );
 };

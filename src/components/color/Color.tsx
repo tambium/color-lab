@@ -1,77 +1,59 @@
 import React from 'react';
-import { color, lch } from 'd3-color';
-import { ShadeSet } from '../../palettes';
-import { Table } from '../table';
-import { colorTableHead } from '../../shared/table';
-import { ColorCell } from '../../shared';
+import { ChartSet } from '../chart-set';
 
 interface ColorProps {
-  palette: ShadeSet[];
-  position: Array<number>;
+  palette: Map<string, Map<number, string>>;
+  selectedShade: number;
+  selectedShadeSet: string | null;
 }
 
-export const Color: React.FC<ColorProps> = ({ palette, position }) => {
-  const shadeSet = palette[position[1]];
-  const { title } = shadeSet;
+export const Color: React.FC<ColorProps> = ({
+  palette,
+  selectedShade,
+  selectedShadeSet,
+}) => {
+  const shadeSet = palette.get(selectedShadeSet);
+  if (!shadeSet) return null;
 
-  const length = shadeSet.shades.length;
-
-  const DIMENSIONS = [length * 56, 175];
-
-  const head = colorTableHead({ palette, withSpacer: false });
-
-  const rows = [
-    {
-      key: `color-row`,
-      cells: shadeSet.shades.map((shade, xIdx) => {
-        const isSelected = xIdx === position[0];
-
-        return {
-          key: shade.shade || xIdx,
-          content: <ColorCell hex={shade.hex} isSelected={isSelected} />,
-        };
-      }),
-    },
-  ];
+  const SHADE_SET_SIZE = shadeSet.size;
 
   return (
     <div>
       <div style={{ marginBottom: 16 }}>
-        <span style={{ fontSize: 21 }}>{title}</span>
+        <span style={{ fontSize: 21 }}>{selectedShadeSet}</span>
       </div>
-      <div style={{ marginBottom: 32 }}>
-        <Table head={head} rows={rows} />
-      </div>
-
       <div
         style={{
-          backgroundColor: '#F9FAFC',
-          border: '1px solid #D5DBE1',
-          height: DIMENSIONS[1],
-          overflow: 'hidden',
+          display: 'grid',
+          gridTemplateColumns: `repeat(${SHADE_SET_SIZE}, 1fr)`,
+          gridTemplateRows: '28px 36px',
           position: 'relative',
-          width: DIMENSIONS[0],
+          marginBottom: 24,
         }}
       >
-        {shadeSet.shades.map((shade, idx) => {
-          const c = color(shade.hex);
+        {[...shadeSet.keys()].map((key) => {
+          return (
+            <div key={key}>
+              <span style={{ fontSize: 12, fontWeight: 500 }}>{key}</span>
+            </div>
+          );
+        })}
+        {[...shadeSet.keys()].map((key) => {
+          const color = shadeSet.get(key);
+          const isSelected = selectedShade === key;
+
           return (
             <div
-              key={shade.hex || idx}
+              key={key}
               style={{
-                backgroundColor: shade.hex,
-                borderRadius: '50%',
-                border: '1px solid #B9C2CC',
-                height: 16,
-                left: (idx + 1) * 56 - 56 / 2 - 8,
-                position: 'absolute',
-                bottom: 0 - 8 + (DIMENSIONS[1] / 100) * lch(c).l,
-                width: 16,
+                backgroundColor: color,
+                border: `2px solid ${isSelected ? '#FFF' : 'transparent'}`,
               }}
             />
           );
         })}
       </div>
+      <ChartSet columnCount={SHADE_SET_SIZE} columnData={shadeSet} />
     </div>
   );
 };
