@@ -15,12 +15,10 @@
     "chromatism": "^3.0.0",
     "d3-color": "^1.4.0",
     "hsluv": "^0.1.0",
-    "lodash.isequal": "^4.5.0",
     "mousetrap": "^1.6.5",
     "next": "^9.2.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "recharts": "^2.0.0-beta.1",
     "wcag-contrast": "^3.0.0"
   },
   "devDependencies": {
