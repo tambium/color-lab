@@ -19,7 +19,7 @@ export const ColorLab: React.FC<ColorLabProps> = () => {
   const [position, setPosition] = React.useState(new Map());
 
   React.useEffect(() => {
-    /** On-mount, we select a random shade set and shade. */
+    /** On-mount, we select a random shade-set and shade. */
     const randomShadeSetKey = getRandomItem(palette);
     const randomShadeKey = getRandomItem(palette.get(randomShadeSetKey));
 
@@ -106,9 +106,6 @@ export const ColorLab: React.FC<ColorLabProps> = () => {
             selectedShadeSet={selectedShadeSet}
           />
         }
-        // columnA={<Palette palette={palette} position={position} />}
-        // columnB={<Color palette={palette} position={position} />}
-        // columnC={<Shade palette={palette} position={position} />}
       />
     </React.Fragment>
   );
