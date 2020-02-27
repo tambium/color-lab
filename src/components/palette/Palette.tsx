@@ -1,5 +1,5 @@
 import React from 'react';
-import { SHADE, SHADE_SET } from '../../constants';
+import { hex } from 'wcag-contrast';
 
 interface PaletteProps {
   palette: Map<string, Map<number, string>>;
@@ -37,7 +37,9 @@ export const Palette: React.FC<PaletteProps> = ({
         ))}
         {[...palette.keys()].map((shadeSetName: string) => {
           const shadeSet = palette.get(shadeSetName);
-          return [null, ...shadeSet.keys()].map(
+          const shadeSetKeys = [...shadeSet.keys()];
+
+          return [null, ...shadeSetKeys].map(
             (shadeSetShade: number | null, idx) => {
               const isSelected =
                 selectedShade === shadeSetShade &&
@@ -45,6 +47,20 @@ export const Palette: React.FC<PaletteProps> = ({
 
               const color = shadeSet.get(shadeSetShade) || null;
               const hasColor = !!color;
+
+              let comparitor;
+              if (shadeSetShade >= 300) {
+                comparitor = shadeSetKeys[idx - 1 - 5] || shadeSetKeys[0];
+              } else {
+                comparitor =
+                  shadeSetKeys[idx - 1 + 5] ||
+                  shadeSetKeys[shadeSetKeys.length - 1];
+              }
+
+              const ratio = hasColor
+                ? hex(color, shadeSet.get(comparitor))
+                : null;
+
               return (
                 <div
                   key={shadeSetShade || idx}
@@ -58,11 +74,12 @@ export const Palette: React.FC<PaletteProps> = ({
                 >
                   <span
                     style={{
+                      color: shadeSet.get(comparitor),
                       fontSize: 12,
                       fontWeight: 500,
                     }}
                   >
-                    {color || shadeSetName}
+                    {ratio ? ratio.toFixed(2) : shadeSetName}
                   </span>
                 </div>
               );
