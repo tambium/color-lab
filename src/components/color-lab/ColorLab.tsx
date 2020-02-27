@@ -96,9 +96,19 @@ export const ColorLab: React.FC<ColorLabProps> = () => {
           />
         }
         columnB={
-          <Color palette={palette} selectedShadeSet={selectedShadeSet} />
+          <Color
+            palette={palette}
+            selectedShade={selectedShade}
+            selectedShadeSet={selectedShadeSet}
+          />
         }
-        columnC={<Shade palette={palette} selectedShade={selectedShade} />}
+        columnC={
+          <Shade
+            palette={palette}
+            selectedShade={selectedShade}
+            selectedShadeSet={selectedShadeSet}
+          />
+        }
         // columnA={<Palette palette={palette} position={position} />}
         // columnB={<Color palette={palette} position={position} />}
         // columnC={<Shade palette={palette} position={position} />}

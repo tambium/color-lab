@@ -1,11 +1,17 @@
 import React from 'react';
+import { ChartSet } from '../chart-set';
 
 interface ShadeProps {
   palette: Map<string, Map<number, string>>;
   selectedShade: number | null;
+  selectedShadeSet: string | null;
 }
 
-export const Shade: React.FC<ShadeProps> = ({ palette, selectedShade }) => {
+export const Shade: React.FC<ShadeProps> = ({
+  palette,
+  selectedShade,
+  selectedShadeSet,
+}) => {
   if (!selectedShade) return null;
 
   const shades = new Map();
@@ -24,10 +30,33 @@ export const Shade: React.FC<ShadeProps> = ({ palette, selectedShade }) => {
         style={{
           display: 'grid',
           gridTemplateColumns: `repeat(${SHADES_SIZE}, 1fr)`,
-          gridTemplateRows: '24px 140px',
+          gridTemplateRows: '28px 36px',
           position: 'relative',
+          marginBottom: 24,
         }}
-      ></div>
+      >
+        {[...shades.keys()].map((key) => {
+          return (
+            <div key={key}>
+              <span style={{ fontSize: 12, fontWeight: 500 }}>{key}</span>
+            </div>
+          );
+        })}
+        {[...shades.keys()].map((key) => {
+          const color = shades.get(key);
+          const isSelected = selectedShadeSet === key;
+          return (
+            <div
+              key={key}
+              style={{
+                backgroundColor: color,
+                border: `2px solid ${isSelected ? '#FFF' : 'transparent'}`,
+              }}
+            />
+          );
+        })}
+      </div>
+      <ChartSet columnCount={SHADES_SIZE} columnData={shades} />
     </div>
   );
 };

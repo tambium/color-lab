@@ -27,7 +27,13 @@ export const RANGES = new Map([
 ]);
 
 export const BOUNDS = new Map([
-  ['l', LIGHTNESS_RANGE],
-  ['c', CHROMA_RANGE],
-  ['h', HUE_RANGE],
+  [LIGHTNESS, LIGHTNESS_RANGE],
+  [CHROMA, CHROMA_RANGE],
+  [HUE, HUE_RANGE],
+]);
+
+export const PROPERTY_NAMES = new Map([
+  [LIGHTNESS, 'Lightness'],
+  [CHROMA, 'Chroma'],
+  [HUE, 'Hue'],
 ]);

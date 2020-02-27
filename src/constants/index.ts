@@ -7,14 +7,16 @@ import {
   LIGHTNESS_RANGE,
   LIGHTNESS,
   LOWER_BOUND,
+  PROPERTY_NAMES,
   RANGES,
   UPPER_BOUND,
 } from './cielch';
-import { SHADE, SHADE_SET } from './ColorLab';
+import { CHART_HEIGHT, SHADE, SHADE_SET } from './ColorLab';
 import { PRECISION } from './precision';
 
 export {
   BOUNDS,
+  CHART_HEIGHT,
   CHROMA_RANGE,
   CHROMA,
   HUE_RANGE,
@@ -23,6 +25,7 @@ export {
   LIGHTNESS,
   LOWER_BOUND,
   PRECISION,
+  PROPERTY_NAMES,
   RANGES,
   SHADE_SET,
   SHADE,

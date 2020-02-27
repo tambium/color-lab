@@ -63,7 +63,7 @@ export const findDisplayableBoundaries = ({
    *    no  -> start: 0%                -- end: current.weighted
    *
    * does downward boundary have upward boundary after it?
-   *    yes -> start: current.weighted  -- end: next.weighted
+   *    yes -> start: current.weighted  -- end: next.weighted, BUT duplicate of upward yes case so no need to cover...
    *    no  -> start: current.weighted  -- end: 100%
    */
 
@@ -91,13 +91,6 @@ export const findDisplayableBoundaries = ({
     }
 
     if (current.direction === DOWNWARD) {
-      if (next && next.direction === UPWARD) {
-        renderable.push({
-          ...current,
-          top: current.weighted,
-          bottom: next.weighted,
-        });
-      }
       if (!next || next.direction !== UPWARD) {
         renderable.push({
           ...current,
