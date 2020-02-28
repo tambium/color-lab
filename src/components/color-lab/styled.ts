@@ -12,7 +12,9 @@ export const containerStyle = css`
 export const leftWrapper = css`
   flex: 1;
   ${mq({
-    marginRight: [null, null, `${SPACING / 2}px`],
+    flexBasis: ['100%', null, null, 'auto'],
+    marginRight: [null, null, null, null, `${SPACING / 2}px`],
+    marginBottom: [24, null, null, null, null, 0],
   })};
 `;
 
@@ -21,20 +23,23 @@ export const rightWrapper = css`
   flex: 2;
   flex-wrap: wrap;
   ${mq({
-    marginLeft: [null, null, `${SPACING / 2}px`],
+    flexBasis: ['100%', null, null, 'auto'],
+    marginLeft: [null, null, null, null, `${SPACING / 2}px`],
   })};
 `;
 
 export const colLeft = css`
   flex: 1;
   ${mq({
-    marginRight: [null, null, null, `${SPACING / 2}px`],
+    marginRight: [null, null, `${SPACING / 2}px`],
+    flexBasis: ['100%', null, 'auto'],
   })};
 `;
 
 export const colRight = css`
   flex: 1;
   ${mq({
-    marginLeft: [null, null, null, `${SPACING / 2}px`],
+    marginLeft: [null, null, `${SPACING / 2}px`],
+    flexBasis: ['100%', null, 'auto'],
   })};
 `;
