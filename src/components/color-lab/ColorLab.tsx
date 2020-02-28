@@ -1,5 +1,8 @@
+/** @jsx jsx */
 import * as React from 'react';
+import { jsx } from '@emotion/core';
 import { Layout } from '.';
+import { colLeft, colRight, leftWrapper, rightWrapper } from './styled';
 import { Header } from '../header';
 import { Color } from '../color';
 import { Palette } from '../palette';
@@ -86,25 +89,31 @@ export const ColorLab: React.FC<ColorLabProps> = () => {
       <Header />
       <Layout
         columnA={
-          <Palette
-            palette={palette}
-            selectedShade={selectedShade}
-            selectedShadeSet={selectedShadeSet}
-          />
+          <div css={leftWrapper}>
+            <Palette
+              palette={palette}
+              selectedShade={selectedShade}
+              selectedShadeSet={selectedShadeSet}
+            />
+          </div>
         }
         columnB={
-          <Color
-            palette={palette}
-            selectedShade={selectedShade}
-            selectedShadeSet={selectedShadeSet}
-          />
-        }
-        columnC={
-          <Shade
-            palette={palette}
-            selectedShade={selectedShade}
-            selectedShadeSet={selectedShadeSet}
-          />
+          <div css={rightWrapper}>
+            <div css={colLeft}>
+              <Color
+                palette={palette}
+                selectedShade={selectedShade}
+                selectedShadeSet={selectedShadeSet}
+              />
+            </div>
+            <div css={colRight}>
+              <Shade
+                palette={palette}
+                selectedShade={selectedShade}
+                selectedShadeSet={selectedShadeSet}
+              />
+            </div>
+          </div>
         }
       />
     </React.Fragment>

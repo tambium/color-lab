@@ -1,5 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import { hex } from 'wcag-contrast';
+import { ColorCell } from './styled';
 
 interface PaletteProps {
   palette: Map<string, Map<number, string>>;
@@ -19,7 +20,7 @@ export const Palette: React.FC<PaletteProps> = ({
   const SHADE_SET_SIZE = FIRST_SHADE_SET.size;
 
   return (
-    <div>
+    <React.Fragment>
       <div style={{ marginBottom: 16 }}>
         <span style={{ fontSize: 21 }}>Tambium colors</span>
       </div>
@@ -72,21 +73,15 @@ export const Palette: React.FC<PaletteProps> = ({
                     justifyContent: hasColor ? 'center' : 'flex-end',
                   }}
                 >
-                  <span
-                    style={{
-                      color: shadeSet.get(comparitor),
-                      fontSize: 12,
-                      fontWeight: 500,
-                    }}
-                  >
-                    {ratio ? ratio.toFixed(2) : shadeSetName}
-                  </span>
+                  <ColorCell color={hasColor ? shadeSet.get(comparitor) : null}>
+                    {hasColor ? ratio.toFixed(2) : shadeSetName}
+                  </ColorCell>
                 </div>
               );
             },
           );
         })}
       </div>
-    </div>
+    </React.Fragment>
   );
 };

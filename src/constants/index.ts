@@ -13,6 +13,7 @@ import {
 } from './cielch';
 import { CHART_HEIGHT, SHADE, SHADE_SET } from './ColorLab';
 import { PRECISION } from './precision';
+import { mq } from './theme';
 
 export {
   BOUNDS,
@@ -24,6 +25,7 @@ export {
   LIGHTNESS_RANGE,
   LIGHTNESS,
   LOWER_BOUND,
+  mq,
   PRECISION,
   PROPERTY_NAMES,
   RANGES,

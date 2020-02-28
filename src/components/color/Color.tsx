@@ -18,7 +18,7 @@ export const Color: React.FC<ColorProps> = ({
   const SHADE_SET_SIZE = shadeSet.size;
 
   return (
-    <div>
+    <React.Fragment>
       <div style={{ marginBottom: 16 }}>
         <span style={{ fontSize: 21 }}>{selectedShadeSet}</span>
       </div>
@@ -54,6 +54,6 @@ export const Color: React.FC<ColorProps> = ({
         })}
       </div>
       <ChartSet columnCount={SHADE_SET_SIZE} columnData={shadeSet} />
-    </div>
+    </React.Fragment>
   );
 };

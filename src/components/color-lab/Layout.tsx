@@ -2,24 +2,21 @@
 import React from 'react';
 import { jsx } from '@emotion/core';
 
-import { layoutStyle } from './styled';
+import { containerStyle } from './styled';
 
 interface LayoutProps {
   columnA: React.ReactNode;
   columnB: React.ReactNode;
-  columnC: React.ReactNode;
 }
 
 export const Layout: React.FC<LayoutProps> = ({
   columnA: ColumnA,
   columnB: ColumnB,
-  columnC: ColumnC,
 }) => {
   return (
-    <main css={layoutStyle}>
+    <main css={containerStyle}>
       {ColumnA}
       {ColumnB}
-      {ColumnC}
     </main>
   );
 };
