@@ -58,6 +58,7 @@ export const ChartSet = React.memo<ChartSetProps>(
                         borderTop: `3px solid ${color}`,
                         display: 'flex',
                         justifyContent: 'center',
+                        minWidth: 36,
                       }}
                     >
                       <span style={{ fontSize: 12, fontWeight: 500 }}>
