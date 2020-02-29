@@ -25,8 +25,8 @@ export const Lessons: React.FC<LessonsProps> = ({}) => {
           value={lightnessSaturation}
         />
       </div>
-      <HSL lightnessSaturation={lightnessSaturation} />
-      <PerceptuallyUniform lightnessSaturation={lightnessSaturation} />
+      <HSL />
+      <PerceptuallyUniform />
     </React.Fragment>
   );
 };

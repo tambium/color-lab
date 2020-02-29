@@ -1,14 +1,12 @@
 import React from 'react';
 
-interface HSLProps {
-  lightnessSaturation: number;
-}
+interface HSLProps {}
 
-export const HSL: React.FC<HSLProps> = ({ lightnessSaturation }) => {
+export const HSL: React.FC<HSLProps> = () => {
   return (
     <React.Fragment>
       {new Array(360).fill(null).map((_el, idx) => {
-        const hsl = `hsl(${idx}, ${lightnessSaturation}%, ${lightnessSaturation}%)`;
+        const hsl = `hsl(${idx}, 50%, 50%)`;
         return (
           <div
             key={idx}

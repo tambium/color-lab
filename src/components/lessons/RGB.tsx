@@ -1,5 +1,5 @@
 import React from 'react';
-import { convert } from 'chromatism';
+import { rgb as d3rgb } from 'd3-color';
 
 const RGB_DATA = [
   '#8C98A8',
@@ -38,7 +38,8 @@ export const RGB: React.FC = () => {
     <React.Fragment>
       {RGB_DATA.map((color, idx) => {
         const isLast = idx === RGB_DATA.length - 1;
-        const rgb = convert(color).rgb;
+        const rgb = d3rgb(color);
+
         return (
           <div key={color} style={{ marginRight: isLast ? undefined : 24 }}>
             <div style={{ display: 'flex', marginBottom: 48 }}>

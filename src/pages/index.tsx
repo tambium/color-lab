@@ -25,8 +25,6 @@ const SkewedSection = styled.section`
 `;
 
 const Home = (): React.ReactNode => {
-  const [lightnessSaturation, setLightnessSaturation] = React.useState(50);
-
   return (
     <React.Fragment>
       <nav
@@ -176,8 +174,8 @@ const Home = (): React.ReactNode => {
           </div>
           <p style={{ fontSize: 18, marginBottom: 64 }}>
             The hexademical (hex) syntax used in web design is a derivation of
-            RGB. This syntax is convenient when working with an existing color
-            system, but is unintuitive when mixing a new color set.
+            RGB. These descriptions of color are convenient when working with an
+            existing system, but are unintuitive when mixing a new color set.
           </p>
           <div>
             <div
@@ -195,10 +193,10 @@ const Home = (): React.ReactNode => {
               HSL
             </div>
             <p style={{ fontSize: 18, marginBottom: 24 }}>
-              HSL remaps RGB into dimensions that makes human interpretation
-              simpler. Hue is the color type (like red, blue or yellow);
-              saturation controls the amount of color used, and lightness
-              reflects the intensity of color.
+              HSL (hue, saturation and lightness) remaps RGB into dimensions
+              that makes human interpretation simpler. Hue is the color type
+              (like red, blue or yellow); saturation controls the amount of
+              color used, and lightness reflects the intensity of color.
             </p>
 
             <div style={{ marginBottom: 24 }}>
@@ -211,13 +209,13 @@ const Home = (): React.ReactNode => {
                   width: '100%',
                 }}
               >
-                <HSL lightnessSaturation={lightnessSaturation} />
+                <HSL />
               </div>
             </div>
             <p style={{ fontSize: 18, marginBottom: 64 }}>
-              The trouble with RGB and models derived from it is that they are
+              The trouble with RGB and its derivations is that they are
               irregular, meaning the way we perceive the spectrum of hues with
-              fixed lightness and saturation is not linear. Notice that some of
+              fixed lightness and saturation is non-linear. Notice that some of
               the colors appear lighter or more saturated than others.
             </p>
           </div>
@@ -234,13 +232,13 @@ const Home = (): React.ReactNode => {
                 padding: '4px 8px',
               }}
             >
-              HSLuv
+              CIELCh
             </div>
             <p style={{ fontSize: 18, marginBottom: 24 }}>
               Perceptually uniform color spaces attempt to model human
-              perception of color. HSLuv is one such model where colors that
-              share the same value for a dimension (hue, saturation and
-              lightness once again) are guaranteed to look similar.
+              perception of color. CIELCh (lightness, chroma and hue) is one
+              example where colors that share the same value for a dimension are
+              guaranteed to look similar.
             </p>
             <div style={{ marginBottom: 24 }}>
               <div
@@ -252,14 +250,16 @@ const Home = (): React.ReactNode => {
                   width: '100%',
                 }}
               >
-                <PerceptuallyUniform
-                  lightnessSaturation={lightnessSaturation}
-                />
+                <PerceptuallyUniform />
               </div>
             </div>
             <p style={{ fontSize: 18 }}>
-              This color spectrum appears to blend together thanks to
-              sophisticated color transformations.
+              This color spectrum blends together more seamlessly thanks to
+              color transformations that account for human perception. These
+              transformations can result in so-called imaginary colors that
+              aren’t perceivable to the human eye and that’s the real magic of
+              building color systems with perceptually uniform models — feedback
+              on accessibility.
             </p>
           </div>
         </div>
