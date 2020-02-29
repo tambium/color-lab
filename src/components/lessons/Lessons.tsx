@@ -7,18 +7,7 @@ export const Lessons: React.FC<LessonsProps> = ({}) => {
   const [lightnessSaturation, setLightnessSaturation] = React.useState(50);
 
   return (
-    <div style={{ padding: 24 }}>
-      <div style={{ marginBottom: 24 }}>
-        <span
-          style={{
-            display: 'block',
-            fontWeight: 500,
-            marginBottom: 8,
-          }}
-        >
-          Lessons
-        </span>
-      </div>
+    <React.Fragment>
       <RGB />
       <div style={{ marginBottom: 24 }}>
         <span
@@ -38,6 +27,6 @@ export const Lessons: React.FC<LessonsProps> = ({}) => {
       </div>
       <HSL lightnessSaturation={lightnessSaturation} />
       <PerceptuallyUniform lightnessSaturation={lightnessSaturation} />
-    </div>
+    </React.Fragment>
   );
 };

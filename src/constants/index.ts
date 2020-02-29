@@ -13,10 +13,11 @@ import {
 } from './cielch';
 import { CHART_HEIGHT, SHADE, SHADE_SET } from './ColorLab';
 import { PRECISION } from './precision';
-import { mq } from './theme';
+import { breakpoints, mq } from './theme';
 
 export {
   BOUNDS,
+  breakpoints,
   CHART_HEIGHT,
   CHROMA_RANGE,
   CHROMA,

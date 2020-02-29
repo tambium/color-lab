@@ -35,39 +35,21 @@ const Swatch: React.FC<SwatchProps> = ({
 
 export const RGB: React.FC = () => {
   return (
-    <div>
-      <span
-        style={{
-          display: 'block',
-          fontSize: 14,
-          fontWeight: 500,
-        }}
-      >
-        RGB
-      </span>
-      <div
-        style={{
-          backgroundColor: '#F8FAFC',
-          display: 'inline-flex',
-          padding: 48,
-          marginBottom: 48,
-        }}
-      >
-        {RGB_DATA.map((color, idx) => {
-          const isLast = idx === RGB_DATA.length - 1;
-          const rgb = convert(color).rgb;
-          return (
-            <div key={color} style={{ marginRight: isLast ? undefined : 24 }}>
-              <div style={{ display: 'flex', marginBottom: 48 }}>
-                <Swatch backgroundColor={`rgb(${rgb.r}, 0, 0)`} width={8} />
-                <Swatch backgroundColor={`rgb(0, ${rgb.g}, 0)`} width={8} />
-                <Swatch backgroundColor={`rgb(0, 0, ${rgb.b})`} width={8} />
-              </div>
-              <Swatch backgroundColor={color} />
+    <React.Fragment>
+      {RGB_DATA.map((color, idx) => {
+        const isLast = idx === RGB_DATA.length - 1;
+        const rgb = convert(color).rgb;
+        return (
+          <div key={color} style={{ marginRight: isLast ? undefined : 24 }}>
+            <div style={{ display: 'flex', marginBottom: 48 }}>
+              <Swatch backgroundColor={`rgb(${rgb.r}, 0, 0)`} width={8} />
+              <Swatch backgroundColor={`rgb(0, ${rgb.g}, 0)`} width={8} />
+              <Swatch backgroundColor={`rgb(0, 0, ${rgb.b})`} width={8} />
             </div>
-          );
-        })}
-      </div>
-    </div>
+            <Swatch backgroundColor={color} />
+          </div>
+        );
+      })}
+    </React.Fragment>
   );
 };
