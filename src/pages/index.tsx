@@ -2,10 +2,9 @@ import * as React from 'react';
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import { RGB, HSL, PerceptuallyUniform } from '../components/lessons';
-import { Logo } from '../components/logo';
+import { Header } from '../components/header';
 import { breakpoints } from '../constants';
-
-const HEADER_HEIGHT = 64;
+import { HEADER_HEIGHT } from '../components/header/constants';
 
 const SkewedSection = styled.section`
   position: relative;
@@ -27,27 +26,7 @@ const SkewedSection = styled.section`
 const Home = (): React.ReactNode => {
   return (
     <React.Fragment>
-      <nav
-        style={{
-          alignItems: 'center',
-          backdropFilter: 'saturate(180%) blur(20px)',
-          backgroundColor: 'rgba(255,255,255,0.72)',
-          borderBottom: '1px solid #ececec',
-          display: 'flex',
-          justifyContent: 'space-between',
-          height: HEADER_HEIGHT,
-          padding: '0 24px',
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 20,
-        }}
-      >
-        <div style={{ alignItems: 'center', display: 'flex' }}>
-          <Logo height={40} width={40} />
-          <div style={{ fontSize: 21, fontWeight: 600 }}>Tambium</div>
-        </div>
+      <Header>
         <Link href="/color-lab">
           <a
             style={{
@@ -73,7 +52,7 @@ const Home = (): React.ReactNode => {
             Go to lab →
           </a>
         </Link>
-      </nav>
+      </Header>
       <section>
         <div
           style={{

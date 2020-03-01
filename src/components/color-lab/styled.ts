@@ -1,5 +1,6 @@
 import { css } from '@emotion/core';
 import { mq } from '../../constants';
+import { HEADER_HEIGHT } from '../header/constants';
 
 const SPACING = 24;
 
@@ -7,6 +8,7 @@ export const containerStyle = css`
   display: flex;
   flex-wrap: wrap;
   padding: ${SPACING}px;
+  padding-top: ${HEADER_HEIGHT + SPACING}px;
 `;
 
 export const leftWrapper = css`

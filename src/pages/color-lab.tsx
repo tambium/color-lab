@@ -1,9 +1,7 @@
 import React from 'react';
 import { ColorLab as ColorLabComponent } from '../components/color-lab';
 
-interface ColorLabProps {}
-
-const ColorLab: React.FC<ColorLabProps> = ({}) => {
+const ColorLab: React.FC = () => {
   return (
     <React.Fragment>
       <ColorLabComponent />

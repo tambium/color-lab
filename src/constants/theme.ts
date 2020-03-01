@@ -13,3 +13,7 @@ export const mq = facepaint([
   `@media(min-width: ${breakpoints.lg}px)`,
   `@media(min-width: ${breakpoints.xl}px)`,
 ]);
+
+export const layers = {
+  navigation: (): number => 200,
+};
