@@ -37,3 +37,5 @@ export const PROPERTY_NAMES = new Map([
   [CHROMA, 'Chroma'],
   [HUE, 'Hue'],
 ]);
+
+export const PROPERTIES = [LIGHTNESS, CHROMA, HUE];

@@ -6,12 +6,14 @@ interface PaletteProps {
   palette: Map<string, Map<number, string>>;
   selectedShade: number;
   selectedShadeSet: string;
+  setPosition: any;
 }
 
 export const Palette: React.FC<PaletteProps> = ({
   palette,
   selectedShade,
   selectedShadeSet,
+  setPosition,
 }) => {
   // Palettes are made uniform in length so we can pluck any for headers.
   const FIRST_SHADE_SET = [...Array.from(palette)][0][1];
@@ -65,10 +67,21 @@ export const Palette: React.FC<PaletteProps> = ({
               return (
                 <div
                   key={shadeSetShade || idx}
+                  // onClick={() => {
+                  //   if (hasColor) {
+                  //     setPosition(
+                  //       new Map<any, any>([
+                  //         [SHADE_SET, shadeSetName],
+                  //         [SHADE, shadeSetShade],
+                  //       ]),
+                  //     );
+                  //   }
+                  // }}
                   style={{
                     alignItems: 'center',
                     backgroundColor: color,
                     border: `2px solid ${isSelected ? '#fff' : 'transparent'}`,
+                    cursor: hasColor ? 'pointer' : undefined,
                     display: 'flex',
                     justifyContent: hasColor ? 'center' : 'flex-end',
                   }}

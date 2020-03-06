@@ -1,4 +1,6 @@
+import { extendPalette } from './extendPalette';
 import { mapPalette } from './mapPalette';
 import { uniformPalette } from './uniformPalette';
+import { updateColor } from './updateColor';
 
-export { mapPalette, uniformPalette };
+export { extendPalette, mapPalette, uniformPalette, updateColor };
