@@ -74,7 +74,7 @@ export const ChartSet = React.memo<ChartSetProps>(
                   const boundaries = findDisplayableBoundaries({
                     lch: lchified,
                     property,
-                    precision: PRECISION.get(1),
+                    precision: PRECISION.get(0),
                     height: CHART_HEIGHT,
                   });
 
