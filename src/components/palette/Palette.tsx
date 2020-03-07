@@ -2,6 +2,7 @@ import * as React from 'react';
 import { hex as wcagHex } from 'wcag-contrast';
 import { ColorCell } from './styled';
 import { ExtendedShade } from '../../palettes';
+import { SHADE_SET, SHADE } from '../../constants';
 
 interface PaletteProps {
   palette: Map<string, Map<number, ExtendedShade>>;
@@ -69,16 +70,16 @@ export const Palette: React.FC<PaletteProps> = ({
               return (
                 <div
                   key={shadeSetShade || idx}
-                  // onClick={() => {
-                  //   if (hasColor) {
-                  //     setPosition(
-                  //       new Map<any, any>([
-                  //         [SHADE_SET, shadeSetName],
-                  //         [SHADE, shadeSetShade],
-                  //       ]),
-                  //     );
-                  //   }
-                  // }}
+                  onClick={() => {
+                    if (hasColor) {
+                      setPosition(
+                        new Map<any, any>([
+                          [SHADE_SET, shadeSetName],
+                          [SHADE, shadeSetShade],
+                        ]),
+                      );
+                    }
+                  }}
                   style={{
                     alignItems: 'center',
                     backgroundColor: hex,
