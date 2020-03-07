@@ -1,22 +1,29 @@
 /** @jsx jsx */
 import * as React from 'react';
 import { jsx } from '@emotion/core';
+import { Color as d3Color } from 'd3-color';
 import { Layout } from '.';
 import { colLeft, colRight, leftWrapper, rightWrapper } from './styled';
 import { Header } from '../header';
 import { Color } from '../color';
+import { ColorManager } from '../color-manager';
 import { Palette } from '../palette';
 import { Shade } from '../shade';
-import { Tambium } from '../../palettes';
+import { Tambium, ExtendedShade } from '../../palettes';
 import { SHADE, SHADE_SET } from '../../constants';
-import { getRandomItem, mapPalette, uniformPalette } from '../../utilities';
+import {
+  extendPalette,
+  getRandomItem,
+  mapPalette,
+  uniformPalette,
+} from '../../utilities';
 import { useMultiKeyPress } from '../../hooks';
 
 interface ColorLabProps {}
 
 export const ColorLab: React.FC<ColorLabProps> = () => {
   const [palette, setPalette] = React.useState(
-    mapPalette(uniformPalette(Tambium)),
+    extendPalette(mapPalette(uniformPalette(Tambium))),
   );
 
   const [position, setPosition] = React.useState(new Map());
@@ -84,16 +91,39 @@ export const ColorLab: React.FC<ColorLabProps> = () => {
     }
   });
 
+  const getSelectedColor = (): ExtendedShade => {
+    return palette.get(position.get(SHADE_SET))?.get(position.get(SHADE));
+  };
+
+  const updateSelectedColor = (updatedColor: ExtendedShade) => {
+    const cp = new Map(palette);
+    const selectedShadeSetMap = cp.get(selectedShadeSet);
+
+    console.log(selectedShadeSetMap.get(selectedShade), updatedColor);
+
+    if (cp && selectedShadeSetMap) {
+      selectedShadeSetMap.set(selectedShade, updatedColor);
+      setPalette(cp);
+    }
+  };
+
   return (
     <React.Fragment>
       <Header />
       <Layout
         columnA={
           <div css={leftWrapper}>
-            <Palette
-              palette={palette}
-              selectedShade={selectedShade}
-              selectedShadeSet={selectedShadeSet}
+            <div style={{ marginBottom: 24 }}>
+              <Palette
+                palette={palette}
+                selectedShade={selectedShade}
+                selectedShadeSet={selectedShadeSet}
+                setPosition={setPosition}
+              />
+            </div>
+            <ColorManager
+              selectedColor={getSelectedColor()}
+              updateSelectedColor={updateSelectedColor}
             />
           </div>
         }

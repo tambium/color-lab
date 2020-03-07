@@ -4,8 +4,8 @@ import { HEADER_HEIGHT } from './constants';
 
 export const headerStyle = css`
   align-items: center;
-  backdrop-filter: saturate(180%) blur(20px);
-  background-color: rgba(255, 255, 255, 0.72);
+  // backdrop-filter: saturate(180%) blur(20px);
+  background-color: rgba(255, 255, 255, 1);
   border-bottom: 1px solid #ececec;
   display: flex;
   justify-content: space-between;

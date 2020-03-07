@@ -1,17 +1,21 @@
 import * as React from 'react';
-import { hex } from 'wcag-contrast';
+import { hex as wcagHex } from 'wcag-contrast';
 import { ColorCell } from './styled';
+import { ExtendedShade } from '../../palettes';
+import { SHADE_SET, SHADE } from '../../constants';
 
 interface PaletteProps {
-  palette: Map<string, Map<number, string>>;
+  palette: Map<string, Map<number, ExtendedShade>>;
   selectedShade: number;
   selectedShadeSet: string;
+  setPosition: any;
 }
 
 export const Palette: React.FC<PaletteProps> = ({
   palette,
   selectedShade,
   selectedShadeSet,
+  setPosition,
 }) => {
   // Palettes are made uniform in length so we can pluck any for headers.
   const FIRST_SHADE_SET = [...Array.from(palette)][0][1];
@@ -47,6 +51,7 @@ export const Palette: React.FC<PaletteProps> = ({
                 selectedShadeSet === shadeSetName;
 
               const color = shadeSet.get(shadeSetShade) || null;
+              const { hex } = color || {};
               const hasColor = !!color;
 
               let comparitor;
@@ -58,22 +63,35 @@ export const Palette: React.FC<PaletteProps> = ({
                   shadeSetKeys[shadeSetKeys.length - 1];
               }
 
-              const ratio = hasColor
-                ? hex(color, shadeSet.get(comparitor))
-                : null;
+              const { hex: hexComparitor } = shadeSet.get(comparitor) || {};
+
+              const ratio = hasColor ? wcagHex(hex, hexComparitor) : null;
 
               return (
                 <div
                   key={shadeSetShade || idx}
+                  onClick={() => {
+                    if (hasColor) {
+                      setPosition(
+                        new Map<any, any>([
+                          [SHADE_SET, shadeSetName],
+                          [SHADE, shadeSetShade],
+                        ]),
+                      );
+                    }
+                  }}
                   style={{
                     alignItems: 'center',
-                    backgroundColor: color,
+                    backgroundColor: hex,
                     border: `2px solid ${isSelected ? '#fff' : 'transparent'}`,
+                    cursor: hasColor ? 'pointer' : undefined,
                     display: 'flex',
                     justifyContent: hasColor ? 'center' : 'flex-end',
                   }}
                 >
-                  <ColorCell color={hasColor ? shadeSet.get(comparitor) : null}>
+                  <ColorCell
+                    color={hasColor ? shadeSet.get(comparitor).hex : null}
+                  >
                     {hasColor ? ratio.toFixed(2) : shadeSetName}
                   </ColorCell>
                 </div>

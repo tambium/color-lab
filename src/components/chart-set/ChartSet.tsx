@@ -41,7 +41,8 @@ export const ChartSet = React.memo<ChartSetProps>(
                 }}
               >
                 {columnDataKeys.map((key, idx) => {
-                  const color = columnData.get(key);
+                  const color = columnData.get(key).hex;
+
                   const lchified = d3lch(color);
                   const propertyValue = setPrecision(lchified[property]);
 
@@ -69,10 +70,10 @@ export const ChartSet = React.memo<ChartSetProps>(
                 })}
                 {columnDataKeys.map((key, idx) => {
                   const color = columnData.get(key);
-                  const lchified = d3lch(color);
+                  const { hex, lch } = color;
 
                   const boundaries = findDisplayableBoundaries({
-                    lch: lchified,
+                    lch,
                     property,
                     precision: PRECISION.get(0),
                     height: CHART_HEIGHT,
@@ -81,7 +82,7 @@ export const ChartSet = React.memo<ChartSetProps>(
                   const isFirst = idx === 0;
                   const isLast = idx === columnDataKeys.length - 1;
 
-                  const colorBottom = (lchified[property] / range) * 100;
+                  const colorBottom = (lch[property] / range) * 100;
 
                   return (
                     <React.Fragment key={`${property}-${key}`}>
@@ -97,7 +98,7 @@ export const ChartSet = React.memo<ChartSetProps>(
                         <div
                           style={{
                             position: 'absolute',
-                            backgroundColor: color,
+                            backgroundColor: hex,
                             left: 0,
                             right: 0,
                             marginLeft: 'auto',

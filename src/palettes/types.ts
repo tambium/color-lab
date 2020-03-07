@@ -1,9 +1,20 @@
+import { HCLColor } from 'd3-color';
+
+export type ShadeHex = string | undefined;
+export type ShadeIdentifier = number | undefined;
+export type ShadeSetTitle = string;
+
 export type Shade = {
-  hex: string | undefined;
-  shade: number | undefined;
+  hex: ShadeHex;
+  shade: ShadeIdentifier;
 };
 
 export type ShadeSet = {
-  title: string;
+  title: ShadeSetTitle;
   shades: Shade[];
+};
+
+export type ExtendedShade = {
+  hex: ShadeHex;
+  lch: HCLColor;
 };

@@ -1,8 +1,9 @@
 import React from 'react';
 import { ChartSet } from '../chart-set';
+import { ExtendedShade } from '../../palettes';
 
 interface ColorProps {
-  palette: Map<string, Map<number, string>>;
+  palette: Map<string, Map<number, ExtendedShade>>;
   selectedShade: number;
   selectedShadeSet: string | null;
 }
@@ -40,13 +41,14 @@ export const Color: React.FC<ColorProps> = ({
         })}
         {[...shadeSet.keys()].map((key) => {
           const color = shadeSet.get(key);
+          const { hex } = color;
           const isSelected = selectedShade === key;
 
           return (
             <div
               key={key}
               style={{
-                backgroundColor: color,
+                backgroundColor: hex,
                 border: `2px solid ${isSelected ? '#FFF' : 'transparent'}`,
               }}
             />

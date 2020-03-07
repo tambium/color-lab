@@ -1,6 +1,13 @@
-import { ShadeSet } from '../../palettes';
+import {
+  ShadeSet,
+  ShadeSetTitle,
+  ShadeHex,
+  ShadeIdentifier,
+} from '../../palettes';
 
-export const mapPalette = (palette: ShadeSet[]) => {
+export const mapPalette = (
+  palette: ShadeSet[],
+): Map<ShadeSetTitle, Map<ShadeIdentifier, ShadeHex>> => {
   const map = new Map();
 
   palette.forEach((shadeSet: ShadeSet) => {
