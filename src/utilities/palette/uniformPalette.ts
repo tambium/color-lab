@@ -1,9 +1,10 @@
 import { ShadeSet } from '../../palettes';
 
 /** Find palette with greatest number of shades */
-const findLargestSet = (palette: ShadeSet[]) => {
+const findLargestSet = (palette: ShadeSet[]): ShadeSet => {
   let max = 0,
-    maxObj: any = [];
+    maxObj: ShadeSet = palette[0];
+
   palette.forEach((shadeSet) => {
     if (shadeSet.shades.length > max) {
       max = shadeSet.shades.length;
@@ -21,7 +22,7 @@ const fillShades = ({
 }: {
   shadeSet: ShadeSet;
   largestSetLength: number;
-}) => {
+}): ShadeSet => {
   if (shadeSet.shades.length === largestSetLength) return shadeSet;
 
   const toAdd = largestSetLength - shadeSet.shades.length;
@@ -33,10 +34,13 @@ const fillShades = ({
 };
 
 /** Sort palette from lightest shade to darkest shade */
-const sortShades = (shadeSet: { title: string; shades: any[] }) =>
-  shadeSet.shades.sort((a, b) => a.shade - b.shade);
+const sortShades = (shadeSet: ShadeSet): ShadeSet => {
+  const cp = { ...shadeSet };
+  cp.shades.sort((a, b) => a.shade - b.shade);
+  return cp;
+};
 
-export const uniformPalette = (palette: ShadeSet[]) => {
+export const uniformPalette = (palette: ShadeSet[]): ShadeSet[] => {
   const largestSet = findLargestSet(palette);
   const largestSetLength = largestSet.shades.length;
 

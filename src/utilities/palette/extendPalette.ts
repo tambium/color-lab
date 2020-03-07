@@ -1,14 +1,25 @@
-import { ShadeSet, Shade } from '../../palettes';
+import { lch } from 'd3-color';
+import {
+  ShadeSetTitle,
+  ShadeIdentifier,
+  ShadeHex,
+  ExtendedShade,
+} from '../../palettes';
 
-export const extendPalette = (palette: ShadeSet[]) => {
-  const map = new Map();
+export const extendPalette = (
+  palette: Map<ShadeSetTitle, Map<ShadeIdentifier, ShadeHex>>,
+): Map<ShadeSetTitle, Map<ShadeIdentifier, ExtendedShade>> => {
+  const cp: Map<ShadeSetTitle, Map<ShadeIdentifier, any>> = new Map(palette);
 
-  palette.forEach((shadeSet: ShadeSet) => {
-    const shades = new Map();
-    shadeSet.shades.forEach((shade: Shade) => {
-      console.log(shade);
+  cp.forEach((value, key, map) => {
+    value.forEach((value, key, childMap) => {
+      const lchified = lch(value);
+      childMap.set(key, {
+        hex: value,
+        lch: lchified,
+      });
     });
   });
 
-  return palette;
+  return cp;
 };

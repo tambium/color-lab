@@ -1,6 +1,6 @@
-import { lch, HCLColor } from 'd3-color';
+import { lch } from 'd3-color';
 import { RANGES, UPPER_BOUND, LOWER_BOUND } from '../../constants';
-import { setPrecision } from '../numbers';
+import { ExtendedShade } from '../../palettes';
 
 export const updateColor = ({
   adjustment,
@@ -9,14 +9,14 @@ export const updateColor = ({
   property,
 }: {
   adjustment: number;
-  color: HCLColor;
+  color: ExtendedShade;
   direction: number;
   property: string;
-}) => {
-  const targetPropertyValue = color[property];
+}): ExtendedShade => {
+  const targetPropertyValue = color.lch[property];
   const range = RANGES.get(property);
 
-  let updatedValue = setPrecision(targetPropertyValue + adjustment * direction);
+  let updatedValue = targetPropertyValue + adjustment * direction;
 
   if (direction === 1 && updatedValue > range.get(UPPER_BOUND)) {
     updatedValue = range.get(LOWER_BOUND);
@@ -25,13 +25,20 @@ export const updateColor = ({
     updatedValue = range.get(UPPER_BOUND);
   }
 
+  const {
+    lch: { l, c, h },
+  } = color;
+
   const props = {
-    l: color.l,
-    c: color.c,
-    h: color.h,
+    l,
+    c,
+    h,
     [property]: updatedValue,
   };
 
   const updatedLch = lch(props.l, props.c, props.h);
-  return updatedLch;
+  return {
+    hex: updatedLch.hex(),
+    lch: updatedLch,
+  };
 };

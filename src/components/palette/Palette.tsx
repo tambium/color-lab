@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { hex } from 'wcag-contrast';
+import { hex as wcagHex } from 'wcag-contrast';
 import { ColorCell } from './styled';
+import { ExtendedShade } from '../../palettes';
 
 interface PaletteProps {
-  palette: Map<string, Map<number, string>>;
+  palette: Map<string, Map<number, ExtendedShade>>;
   selectedShade: number;
   selectedShadeSet: string;
   setPosition: any;
@@ -49,6 +50,7 @@ export const Palette: React.FC<PaletteProps> = ({
                 selectedShadeSet === shadeSetName;
 
               const color = shadeSet.get(shadeSetShade) || null;
+              const { hex } = color || {};
               const hasColor = !!color;
 
               let comparitor;
@@ -60,9 +62,9 @@ export const Palette: React.FC<PaletteProps> = ({
                   shadeSetKeys[shadeSetKeys.length - 1];
               }
 
-              const ratio = hasColor
-                ? hex(color, shadeSet.get(comparitor))
-                : null;
+              const { hex: hexComparitor } = shadeSet.get(comparitor) || {};
+
+              const ratio = hasColor ? wcagHex(hex, hexComparitor) : null;
 
               return (
                 <div
@@ -79,14 +81,16 @@ export const Palette: React.FC<PaletteProps> = ({
                   // }}
                   style={{
                     alignItems: 'center',
-                    backgroundColor: color,
+                    backgroundColor: hex,
                     border: `2px solid ${isSelected ? '#fff' : 'transparent'}`,
                     cursor: hasColor ? 'pointer' : undefined,
                     display: 'flex',
                     justifyContent: hasColor ? 'center' : 'flex-end',
                   }}
                 >
-                  <ColorCell color={hasColor ? shadeSet.get(comparitor) : null}>
+                  <ColorCell
+                    color={hasColor ? shadeSet.get(comparitor).hex : null}
+                  >
                     {hasColor ? ratio.toFixed(2) : shadeSetName}
                   </ColorCell>
                 </div>

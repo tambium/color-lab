@@ -3,32 +3,63 @@ import { lch, HCLColor } from 'd3-color';
 import { PROPERTIES } from '../../constants';
 import { setPrecision } from '../../utilities';
 import { updateColor } from '../../utilities/palette';
+import { ExtendedShade } from '../../palettes';
 
 interface ColorManagerProps {
-  selectedColor: string | undefined;
+  selectedColor: ExtendedShade | undefined;
   updateSelectedColor: any;
 }
 
-const ADJUSTMENTS = [10, 1, 0.1];
+const ADJUSTMENTS = new Map([
+  ['large', 10],
+  ['medium', 1],
+  ['small', 0.1],
+]);
+
+const Updater: React.FC<{
+  direction: number;
+  property: string;
+  selectedColor: ExtendedShade;
+  updateSelectedColor: (ExtendedShade) => any;
+}> = ({ direction, property, selectedColor, updateSelectedColor }) => {
+  let keys = [...ADJUSTMENTS.keys()];
+  if (direction === 1) keys = keys.reverse();
+
+  return (
+    <div>
+      {keys.map((adjustmentKey) => {
+        const adjustment = ADJUSTMENTS.get(adjustmentKey);
+        return (
+          <button
+            onClick={() => {
+              const updatedColor = updateColor({
+                adjustment,
+                color: selectedColor,
+                direction,
+                property,
+              });
+              updateSelectedColor(updatedColor);
+            }}
+            key={adjustment}
+          >
+            {direction === 1 ? `>` : `<`}
+          </button>
+        );
+      })}
+    </div>
+  );
+};
 
 export const ColorManager: React.FC<ColorManagerProps> = ({
   selectedColor,
   updateSelectedColor,
 }) => {
   if (!selectedColor) return null;
-
-  const { l, c, h } = lch(selectedColor);
-  const preciseLchified = lch(
-    setPrecision(l),
-    setPrecision(c),
-    setPrecision(h),
-  );
+  const { hex, lch } = selectedColor;
 
   return (
     <React.Fragment>
-      <div
-        style={{ backgroundColor: selectedColor, height: 200, width: 200 }}
-      />
+      <div style={{ backgroundColor: hex, height: 200, width: 200 }} />
       <div
         style={{
           display: 'inline-flex',
@@ -40,48 +71,23 @@ export const ColorManager: React.FC<ColorManagerProps> = ({
             <div
               key={property}
               style={{
-                backgroundColor: 'red',
                 display: 'flex',
                 justifyContent: 'space-between',
               }}
             >
-              <div>
-                {ADJUSTMENTS.map((adjustment) => {
-                  return (
-                    <button
-                      onClick={() => {
-                        const updatedColor = updateColor({
-                          adjustment,
-                          color: preciseLchified,
-                          direction: -1,
-                          property,
-                        });
-                        updateSelectedColor(updatedColor);
-                      }}
-                      key={adjustment}
-                    >{`<`}</button>
-                  );
-                })}
-              </div>
-              {property.toUpperCase()}:{' '}
-              {setPrecision(preciseLchified[property])}
-              <div>
-                {ADJUSTMENTS.reverse().map((adjustment) => {
-                  return (
-                    <button
-                      key={adjustment}
-                      onClick={(): HCLColor =>
-                        updateColor({
-                          adjustment,
-                          color: preciseLchified,
-                          direction: +1,
-                          property,
-                        })
-                      }
-                    >{`>`}</button>
-                  );
-                })}
-              </div>
+              <Updater
+                direction={-1}
+                selectedColor={selectedColor}
+                updateSelectedColor={updateSelectedColor}
+                property={property}
+              />
+              {property.toUpperCase()}: {setPrecision(lch[property])}
+              <Updater
+                direction={1}
+                selectedColor={selectedColor}
+                updateSelectedColor={updateSelectedColor}
+                property={property}
+              />
             </div>
           );
         })}
