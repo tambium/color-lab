@@ -99,8 +99,6 @@ export const ColorLab: React.FC<ColorLabProps> = () => {
     const cp = new Map(palette);
     const selectedShadeSetMap = cp.get(selectedShadeSet);
 
-    console.log(selectedShadeSetMap.get(selectedShade), updatedColor);
-
     if (cp && selectedShadeSetMap) {
       selectedShadeSetMap.set(selectedShade, updatedColor);
       setPalette(cp);

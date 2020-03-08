@@ -87,6 +87,7 @@ export const Palette: React.FC<PaletteProps> = ({
                     cursor: hasColor ? 'pointer' : undefined,
                     display: 'flex',
                     justifyContent: hasColor ? 'center' : 'flex-end',
+                    minWidth: 52,
                   }}
                 >
                   <ColorCell

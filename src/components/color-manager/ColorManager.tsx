@@ -1,19 +1,34 @@
 import React from 'react';
-import { lch, HCLColor } from 'd3-color';
+import { Badge, Button, PropertyInput } from './styled';
 import { PROPERTIES } from '../../constants';
 import { setPrecision } from '../../utilities';
 import { updateColor } from '../../utilities/palette';
 import { ExtendedShade } from '../../palettes';
+import {
+  ArrowRight,
+  ArrowRightDouble,
+  ArrowRightTriple,
+} from '../../components/icon';
 
 interface ColorManagerProps {
   selectedColor: ExtendedShade | undefined;
   updateSelectedColor: any;
 }
 
+const LARGE = 'large';
+const MEDIUM = 'medium';
+const SMALL = 'small';
+
 const ADJUSTMENTS = new Map([
-  ['large', 10],
-  ['medium', 1],
-  ['small', 0.1],
+  [LARGE, 10],
+  [MEDIUM, 1],
+  [SMALL, 0.1],
+]);
+
+const ICONS = new Map([
+  [LARGE, ArrowRightTriple],
+  [MEDIUM, ArrowRightDouble],
+  [SMALL, ArrowRight],
 ]);
 
 const Updater: React.FC<{
@@ -29,21 +44,29 @@ const Updater: React.FC<{
     <div>
       {keys.map((adjustmentKey) => {
         const adjustment = ADJUSTMENTS.get(adjustmentKey);
+        const Icon = ICONS.get(adjustmentKey);
         return (
-          <button
-            onClick={() => {
-              const updatedColor = updateColor({
-                adjustment,
-                color: selectedColor,
-                direction,
-                property,
-              });
-              updateSelectedColor(updatedColor);
-            }}
-            key={adjustment}
-          >
-            {direction === 1 ? `>` : `<`}
-          </button>
+          <div key={adjustment} style={{ display: 'inline-flex', padding: 4 }}>
+            <Button
+              onClick={() => {
+                const updatedColor = updateColor({
+                  adjustment,
+                  color: selectedColor,
+                  direction,
+                  property,
+                });
+                updateSelectedColor(updatedColor);
+              }}
+            >
+              <div
+                style={{
+                  transform: direction === -1 ? 'rotate(180deg)' : null,
+                }}
+              >
+                <Icon size="small" />
+              </div>
+            </Button>
+          </div>
         );
       })}
     </div>
@@ -59,7 +82,19 @@ export const ColorManager: React.FC<ColorManagerProps> = ({
 
   return (
     <React.Fragment>
-      <div style={{ backgroundColor: hex, height: 200, width: 200 }} />
+      <div
+        style={{ display: 'flex', alignItems: 'flex-end', marginBottom: 12 }}
+      >
+        <div
+          style={{
+            backgroundColor: hex,
+            height: 200,
+            marginRight: 12,
+            width: 200,
+          }}
+        />
+        {!lch.displayable() && <Badge>Imaginary</Badge>}
+      </div>
       <div
         style={{
           display: 'inline-flex',
@@ -71,6 +106,7 @@ export const ColorManager: React.FC<ColorManagerProps> = ({
             <div
               key={property}
               style={{
+                alignItems: 'center',
                 display: 'flex',
                 justifyContent: 'space-between',
               }}
@@ -81,7 +117,10 @@ export const ColorManager: React.FC<ColorManagerProps> = ({
                 updateSelectedColor={updateSelectedColor}
                 property={property}
               />
-              {property.toUpperCase()}: {setPrecision(lch[property])}
+              <PropertyInput>
+                <button>{property.toUpperCase()}</button>
+                <input readOnly value={setPrecision(lch[property])} />
+              </PropertyInput>
               <Updater
                 direction={1}
                 selectedColor={selectedColor}
