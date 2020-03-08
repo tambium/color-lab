@@ -8,3 +8,9 @@ Color Lab is an implementation of tooling outlined by the team at [Stripe](https
 git clone git@github.com:tambium/color-lab.git
 cd color-lab && yarn && yarn run dev
 ```
+
+#### Building
+
+```sh
+yarn build && now --prod
+```
