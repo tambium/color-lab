@@ -1,4 +1,4 @@
-import { ShadeSet } from '../../palettes';
+import { Shade, ShadeSet } from '../../palettes';
 
 /** Find palette with greatest number of shades */
 const findLargestSet = (palette: ShadeSet[]): ShadeSet => {
@@ -18,17 +18,26 @@ const findLargestSet = (palette: ShadeSet[]): ShadeSet => {
 /** Fill set to match longest shade set  */
 const fillShades = ({
   shadeSet,
-  largestSetLength,
+  largestSet,
 }: {
   shadeSet: ShadeSet;
-  largestSetLength: number;
+  largestSet: ShadeSet;
 }): ShadeSet => {
+  const largestSetLength = largestSet.shades.length;
   if (shadeSet.shades.length === largestSetLength) return shadeSet;
 
-  const toAdd = largestSetLength - shadeSet.shades.length;
-  for (let i = 0; i < toAdd; i++) {
-    shadeSet.shades.unshift({ hex: undefined, shade: undefined });
-  }
+  const cpLargestShades = JSON.parse(JSON.stringify(largestSet.shades));
+  cpLargestShades.forEach((shade) => (shade.hex = null));
+
+  shadeSet.shades = [
+    ...cpLargestShades.filter(
+      (shade: Shade) =>
+        !shadeSet.shades.find(
+          (comparitor: Shade) => shade.shade === comparitor.shade,
+        ),
+    ),
+    ...shadeSet.shades,
+  ];
 
   return shadeSet;
 };
@@ -42,12 +51,11 @@ const sortShades = (shadeSet: ShadeSet): ShadeSet => {
 
 export const uniformPalette = (palette: ShadeSet[]): ShadeSet[] => {
   const largestSet = findLargestSet(palette);
-  const largestSetLength = largestSet.shades.length;
 
-  const adjustedPalette = palette;
+  const adjustedPalette = [...palette];
 
   adjustedPalette.forEach((shadeSet) => {
-    fillShades({ shadeSet, largestSetLength });
+    fillShades({ shadeSet, largestSet });
   });
 
   adjustedPalette.forEach((shadeSet) => {
