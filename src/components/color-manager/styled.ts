@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 
-export const Badge = styled.div`
-  background-color: #fce2de;
+export const Badge = styled('div')`
+  background-color: #000;
   border-radius: 20px;
-  color: #a52654;
+  color: #fff;
   font-size: 13px;
   font-weight: 500;
   padding: 2px 8px;

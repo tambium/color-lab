@@ -93,7 +93,15 @@ export const ColorManager: React.FC<ColorManagerProps> = ({
             width: 200,
           }}
         />
-        {!lch.displayable() && <Badge>Imaginary</Badge>}
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <Badge>{hex.toUpperCase()}</Badge>
+
+          {!lch.displayable() && (
+            <div style={{ marginTop: 8 }}>
+              <Badge>Imaginary</Badge>
+            </div>
+          )}
+        </div>
       </div>
       <div
         style={{
