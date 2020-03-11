@@ -1,10 +1,13 @@
+/** @jsx jsx */
 import * as React from 'react';
+import { jsx } from '@emotion/core';
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import { RGB, HSL, PerceptuallyUniform } from '../components/lessons';
 import { Header } from '../components/header';
 import { breakpoints } from '../constants';
 import { HEADER_HEIGHT } from '../components/header/constants';
+import { ButtonBase } from '../shared';
 
 const SkewedSection = styled.section`
   position: relative;
@@ -28,29 +31,7 @@ const Home = (): React.ReactNode => {
     <React.Fragment>
       <Header>
         <Link href="/color-lab">
-          <a
-            style={{
-              alignItems: 'baseline',
-              backgroundColor: '#000',
-              border: 0,
-              borderRadius: 6,
-              borderWidth: 0,
-              boxSizing: 'border-box',
-              color: '#fff',
-              display: 'inline-flex',
-              fontStyle: 'normal',
-              fontWeight: 500,
-              lineHeight: '28px',
-              maxWidth: '100%',
-              outline: 'none !important',
-              padding: '4px 16px',
-              textAlign: 'center',
-              textDecoration: 'none',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            Go to lab →
-          </a>
+          <a css={ButtonBase}>Go to lab →</a>
         </Link>
       </Header>
       <section>

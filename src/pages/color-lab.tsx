@@ -1,10 +1,11 @@
 import React from 'react';
 import { ColorLab as ColorLabComponent } from '../components/color-lab';
+import { Tambium } from '../palettes';
 
 const ColorLab: React.FC = () => {
   return (
     <React.Fragment>
-      <ColorLabComponent />
+      <ColorLabComponent basePalette={Tambium} />
     </React.Fragment>
   );
 };

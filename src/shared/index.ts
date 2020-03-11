@@ -1,3 +1,3 @@
-import { ColorCell, headCellStyle } from './style';
+import { ButtonBase, ColorCell, headCellStyle } from './style';
 
-export { ColorCell, headCellStyle };
+export { ButtonBase, ColorCell, headCellStyle };

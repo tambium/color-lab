@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import * as React from 'react';
-import { jsx } from '@emotion/core';
-import { Color as d3Color } from 'd3-color';
+import { jsx, css } from '@emotion/core';
 import { Layout } from '.';
 import { colLeft, colRight, leftWrapper, rightWrapper } from './styled';
 import { Header } from '../header';
@@ -9,21 +8,25 @@ import { Color } from '../color';
 import { ColorManager } from '../color-manager';
 import { Palette } from '../palette';
 import { Shade } from '../shade';
-import { Tambium, ExtendedShade } from '../../palettes';
+import { ExtendedShade, ShadeSet } from '../../palettes';
 import { SHADE, SHADE_SET } from '../../constants';
 import {
+  copyPalette,
   extendPalette,
   getRandomItem,
   mapPalette,
   uniformPalette,
 } from '../../utilities';
 import { useMultiKeyPress } from '../../hooks';
+import { ButtonBase } from '../../shared';
 
-interface ColorLabProps {}
+interface ColorLabProps {
+  basePalette: ShadeSet[];
+}
 
-export const ColorLab: React.FC<ColorLabProps> = () => {
+export const ColorLab: React.FC<ColorLabProps> = ({ basePalette }) => {
   const [palette, setPalette] = React.useState(
-    extendPalette(mapPalette(uniformPalette(Tambium))),
+    extendPalette(mapPalette(uniformPalette(basePalette))),
   );
 
   const [position, setPosition] = React.useState(new Map());
@@ -107,7 +110,25 @@ export const ColorLab: React.FC<ColorLabProps> = () => {
 
   return (
     <React.Fragment>
-      <Header />
+      <Header>
+        <div>
+          <button
+            css={css`
+              ${ButtonBase};
+              margin-right: 8px;
+            `}
+            onClick={() => copyPalette({ palette, output: 'theme' })}
+          >
+            Copy theme
+          </button>
+          <button
+            css={ButtonBase}
+            onClick={() => copyPalette({ palette, output: 'JSON' })}
+          >
+            Copy JSON
+          </button>
+        </div>
+      </Header>
       <Layout
         columnA={
           <div css={leftWrapper}>

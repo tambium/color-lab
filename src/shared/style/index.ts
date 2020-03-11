@@ -1,3 +1,4 @@
+import { ButtonBase } from './Button';
 import { ColorCell, headCellStyle } from './Table';
 
-export { ColorCell, headCellStyle };
+export { ButtonBase, ColorCell, headCellStyle };
